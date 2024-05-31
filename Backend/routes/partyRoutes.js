@@ -162,6 +162,90 @@ router.get("/:id", async (req, res) =>{
     } catch (error) {
         return res.status(400).json({ error:"Evento não encontrado!"})
     }
+
+})
+
+//Delete a Party
+router.delete("/", verifyToken, async (req, res) =>{
+
+        const token = req.header("auth-token")
+        const user = await getUserByToken(token)
+        const partyId = req.body.id
+        const userId = user._id.toString()
+
+        try {
+            
+            await Party.deleteOne({_id: partyId, userId: userId})
+            res.json({ error: null, msg: "Excluido com sucesso"})
+
+        } catch (error) {
+            res.status(400).json({ error: "Erro ao remover" })
+        }
+})
+
+//Update a party
+router.put("/", verifyToken, upload.fields([{ name: "photos"}]), async (req,res) =>{
+
+    //Req body
+    const title = req.body.title
+    const description = req.body.description
+    const partyDate = req.body.party_date
+    const partyId = req.body.id
+    const partyUserId = req.body.user_id
+
+    let files = [];
+    
+    if(req.files){
+        files = req.files.photos
+    }
+
+    //Validation
+    if(title == "null" || description == "null" || partyDate == "null"){
+    return res.status(400).json({error: "Existem um ou mais campos vazios"})
+    }
+
+    //Verify user
+    const token = req.header("auth-token")
+
+    const userByToken = await getUserByToken(token)
+
+    const userId = userByToken._id.toString()
+
+    if(userId != partyUserId){
+        return res.status(400).json({error: "Usuário não tem permissão para fazer isto"})
+    }
+
+    //Build party object
+    const party = {
+        id: partyId,
+        title: title,
+        description: description,
+        partyDate: partyDate,
+        privacy: req.body.privacy,
+        userId: userId
+    }
+
+    //Create photos array with image path
+    let photos = []
+        
+    if(files && files.lenght > 0){
+        
+        files.forEach((photo, i) => {
+            photos[i] = photo.path
+        })
+
+        party.photos = photos
+    }
+
+    try {
+        
+        //Returns updated data
+        const updatedParty = await Party.findOneAndUpdate({ _id: partyId, userId: userId}, {$set: party}, {new: true})
+        res.json({ error: null, msg: "Atualizado com sucesso!", data: updatedParty})
+
+    } catch (error) {
+        res.status(400).json({error})
+    }
 })
 
 module.exports = router
