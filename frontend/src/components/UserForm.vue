@@ -1,6 +1,7 @@
 <template>
     <div>
-       <form action="" id="user-form">
+        <Message :msg="msg" :msgClass="msgClass" />
+       <form id="user-form" @submit="page === 'register' ? register($event) : update($event)">
         <div class="input-container">
             <label for="name">Nome:</label>
             <input type="text" id="name" v-model="name" placeholder="Digite seu nome">
@@ -18,7 +19,7 @@
 
         <div class="input-container">
             <label for="confirmpassword">Senha:</label>
-            <input type="password" id="confirmpassword" v-model="confirmpassword" placeholder="confirme sua senha">
+            <input type="password" id="confirmpassword" v-model="confirmpassword" placeholder="Confirme sua senha">
         </div>
         <InputSubmit :text="btnText" />
        </form>
@@ -27,6 +28,7 @@
 
 <script>
 import InputSubmit from './form/InputSubmit.vue'
+import Message from './Message.vue'
 
 export default {    
     name: "RegisterForm",
@@ -36,16 +38,49 @@ export default {
             email: null,
             password: null,
             confirmpassword: null,
-            btnText: "Cadastrar"
+            msg: null,
+            msgClass: null
         }
     },
+    props: ["user", "page", "btnText"],
     components: {
-        InputSubmit
+        InputSubmit,
+        Message
+    },
+    methods: {
+        async register(e){
+
+            e.preventDefault();
+
+            console.log("OK")
+        }
     }
 
 }
 </script>
 
 <style scoped>
+#user-form{
+    max-width: 400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
 
+.input-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.input-container label{
+    margin-bottom: 10px;
+    color: #555
+}
+
+.input-container input{
+    padding: 10px;
+    border: 1px solid #e8e8e8;
+}
 </style>
