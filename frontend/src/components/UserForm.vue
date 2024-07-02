@@ -83,6 +83,7 @@ export default {
                     this.msgClass = "success";
 
                     //Emit event for auth an user
+                    this.$store.commit("authenticate", {token: data.token, userId: data.userId})
                 }
 
                 setTimeout(() =>{
