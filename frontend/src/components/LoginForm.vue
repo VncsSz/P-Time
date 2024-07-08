@@ -25,10 +25,60 @@ export default {
         Message,
         InputSubmit
     },
+    data(){
+        return {
+            email: null,
+            password: null,
+            msg: null,
+            msgClass: null
+        }
+    },
     methods: {
-        login(e) {
+        async login(e) {
 
             e.preventDefault();
+
+            const data = {
+                email: this.email,
+                password: this.password
+            }
+
+            const jsonData = JSON.stringify(data);
+
+            await fetch("http://localhost:3000/api/auth/login", {
+            method: "POST",
+            headers: {"Content-type": "application/json"},
+            body: jsonData
+            })
+            .then((resp) => resp.json())
+            .then((data) =>{
+
+                let auth = false;
+
+                if(data.error){
+                    this.msg = data.error;
+                    this.msgClass = "error";
+                } else {
+                    
+                    auth = true;
+                    this.msg = data.msg;
+                    this.msgClass = "success";
+
+                    //Emit event for auth an user
+                    this.$store.commit("authenticate", {token: data.token, userId: data.userId})
+                }
+
+                setTimeout(() =>{
+                    if(!auth){
+                        this.msg = null;
+                    } else {
+                        //Redirect
+                        this.$router.push("dashboard")
+                    }
+
+                }, 2000)
+
+            });
 
         }
     }
