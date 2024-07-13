@@ -27,7 +27,7 @@ router.get("/:id", verifyToken, async (req,res) => {
 
 //Update an user
 
-router.put("/", verifyToken, async(req, res) =>{
+router.patch("/", verifyToken, async(req, res) =>{
 
     const token = req.header("auth-token")
     const user = await getUserByToken(token)
