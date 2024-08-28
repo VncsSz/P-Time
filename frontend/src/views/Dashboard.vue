@@ -11,7 +11,7 @@
         </div>
 
         <div v-else>
-            <p>Você ainda não tem festas cadastradas, <router-link to="newparty">cadastre aqui uma festa aqui.</router-link></p>
+            <p>Você ainda não tem festas cadastradas, <router-link to="newparty">cadastre uma festa aqui.</router-link></p>
         </div>
 
     </div>
