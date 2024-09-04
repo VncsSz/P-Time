@@ -47,7 +47,7 @@ router.post("/", verifyToken, upload.fields([{name: "photos"}]), async(req, res)
         //Create photos array with image path
         let photos = []
         
-        if(files && files.lenght > 0){
+        if(files && files.length > 0){
             
             files.forEach((photo, i) => {
                 photos[i] = photo.path
@@ -228,7 +228,7 @@ router.put("/", verifyToken, upload.fields([{ name: "photos"}]), async (req,res)
     //Create photos array with image path
     let photos = []
         
-    if(files && files.lenght > 0){
+    if(files && files.length > 0){
         
         files.forEach((photo, i) => {
             photos[i] = photo.path

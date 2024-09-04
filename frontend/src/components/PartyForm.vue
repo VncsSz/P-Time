@@ -1,7 +1,7 @@
 <template>
     <div>
         <Message :msg="msg" :msgClass="msgClass" />
-        <form id="party-form" enctype="multipart/form-data" @submit="page === 'newparty' ? createParty($event) : uptade($event)">
+        <form id="party-form" enctype="multipart/form-data" @submit="page === 'newparty' ? createParty($event) : update($event)">
             <input type="hidden" id="id" name="id" v-model="id">
             <input type="hidden" id="user_id" name="user_id" v-model="user_id">
             <div class="input-container">
@@ -22,11 +22,11 @@
             </div>
             <div v-if="page === 'editparty' && showMiniImages" class="mini-images">
                 <p>Imagens atuais:</p>
-                <img v-for="(photo, index) in photos" :src="`${photos}`" :key="index">
+                <img v-for="(photo, index) in photos" :src="`${photo}`" :key="index">
             </div>
             <div class="input-container checkbox-container">
-                <label for="privacy">Evento privado?</label>
-                <input type="checkbox" id="privacy" name="privacy">
+                <label for="privacy">Evento privado:</label>
+                <input type="checkbox" id="privacy" name="privacy" v-model="privacy">
             </div>    
             <InputSubmit :text="btnText" />
         </form>
@@ -45,8 +45,8 @@ export default {
             title: this.party.title || null,
             description: this.party.description || null,
             party_date: this.party.partyDate || null,
-            photos: this.party.photos || null,
-            privacy: this.party.privacy || null,
+            photos: this.party.photos || [],
+            privacy: this.party.privacy || false,
             user_id: this.party.userId || null,
             msg: null,
             msgClass: null,
@@ -62,6 +62,50 @@ export default {
 
             e.preventDefault();
 
+            const formData = new FormData();
+
+            formData.append('title', this.title);
+            formData.append('description', this.description);
+            formData.append('party_date', this.party_date);
+            formData.append('privacy', this.privacy);
+
+            if(this.photos.length > 0) {
+                for(const i of Object.keys(this.photos)) {
+                    formData.append('photos', this.photos[i]);
+                }
+            }
+
+            //Get token from store 
+            const token = this.$store.getters.token;
+
+            await fetch("http://localhost:3000/api/party",{
+                method: "POST",
+                headers: {
+                    "auth-token": token
+                },
+                body: formData
+            })
+            .then((resp) => resp.json())
+            .then((data) =>{
+
+                if(data.error) {
+                    this.msg = data.error;
+                    this.msgClass = "error"
+                }else {
+                    this.msg = data.msg;
+                    this.msgClass = "success";
+                }
+
+                setTimeout(() => {
+                    this.msg = null;
+
+                    //Redirect
+                    if(!data.error) {
+                        this.$router.push('dashboard')
+                    }
+
+                }, 2000)
+            })
         },
         onChange(e){
 
@@ -69,7 +113,7 @@ export default {
             this.showMiniImages = false;
 
         },
-        async uptade(e){
+        async update(e){
 
             e.preventDefault();
 
