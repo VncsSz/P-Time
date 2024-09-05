@@ -23,6 +23,33 @@ export default {
         return {
             parties: []
         }
+    },
+    created() {
+        //Load user parties
+        this.getParties();
+    },
+    methods: {
+        async getParties() {
+
+            //Get token from store
+            const token = this.$store.getters.token;
+
+            await fetch("http://localhost:3000/api/party/userparties",{
+                method: "GET",
+                headers: {
+                    "Content-type": "application/json",
+                    "auth-token": token
+                }
+            })
+            .then((resp) => resp.json())
+            .then((data) => {
+
+                this.parties = data.parties;
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        }
     }
 }
 </script>
