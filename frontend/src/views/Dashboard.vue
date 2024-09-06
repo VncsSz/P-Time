@@ -7,7 +7,7 @@
         </div>
 
         <div v-if="parties.length > 0">
-            <h1>Tabela de festas</h1>
+            <DataTable :parties="parties" />
         </div>
 
         <div v-else>
@@ -18,11 +18,15 @@
 </template>
 
 <script>
+import DataTable from '../components/DataTable.vue';
+
 export default {
     data(){
         return {
             parties: []
         }
+    },components: {
+        DataTable
     },
     created() {
         //Load user parties
