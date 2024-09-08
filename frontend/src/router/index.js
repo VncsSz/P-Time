@@ -69,6 +69,14 @@ const routes = [
     meta: {
       requiresAuth: true
     }
+  },
+  {
+    path: '/party/:id',
+    name: 'Party',
+    component: () => import(/* webpackChunkName: "party" */ '../views/Party.vue'),
+    meta: {
+      requiresAuth: true
+    }
   }
 ]
 

@@ -184,7 +184,7 @@ router.delete("/", verifyToken, async (req, res) =>{
 })
 
 //Update a party
-router.put("/", verifyToken, upload.fields([{ name: "photos"}]), async (req,res) =>{
+router.patch("/", verifyToken, upload.fields([{ name: "photos"}]), async (req,res) =>{
 
     //Req body
     const title = req.body.title
