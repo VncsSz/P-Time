@@ -2,14 +2,14 @@
   <div class="home">
     <h1>Veja as últimas festas</h1>
     <div class="parties-container">
-      <div class="party-container">
-        <div class="party-img"></div>
-        <router-link to="/link" class="party-title">Title</router-link>
-        <p class="party-date">Data:</p>
-        <router-link to=".link2" class="party-details-btn">Ver mais</router-link>
+      <div class="party-container" v-for="(party, index) in parties" :key="index">
+        <div class="party-img" :style="{'background-image': 'url(' + party.photos[0] + ')'}"></div>
+        <router-link :to="`/party/${party._id}`" class="party-title">{{ party.title }}</router-link>
+        <p class="party-date">Data: {{ party.partyDate }}</p>
+        <router-link :to="`/party/${party._id}`" class="party-details-btn">Ver mais</router-link>
       </div>
     </div>
-    <p v-if="parties.length == 0">Não ha festas na sua região</p>
+    <p v-if="parties.length == 0">Não há festas na sua região</p>
   </div>
 </template>
 
@@ -18,6 +18,45 @@ export default {
   data() {
     return {
       parties: []
+    }
+  },
+  created() {
+    //Load public parties
+    this.getParties();
+  },
+  methods: {
+    
+    async getParties() {
+
+      await fetch("http://localhost:3000/api/party/all", {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json"
+        }
+      })
+      .then((resp) => resp.json())
+      .then((data) => {
+
+        data.parties.forEach((party, index) => {
+
+          if(party.partyDate) {
+            
+            party.partyDate = new Date(party.partyDate).toLocaleDateString();
+
+          }
+
+          if(party.photos.length > 0) {
+            party.photos.forEach((photo, index) => {
+
+              party.photos[index] = photo.replace("public", "http://localhost:3000").replaceAll("\\", "/");
+
+            });
+          }
+
+        })
+
+        this.parties = data.parties
+      })
     }
   }
 }
