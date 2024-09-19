@@ -11,7 +11,7 @@ const partyRouter = require("./routes/partyRoutes.js")
 //middlewares
 
 //config
-const dbName = "ptime"
+//const dbName = "ptime"
 const port = 3000
 
 const app = express()
@@ -25,8 +25,20 @@ app.use("/api/user", userRouter)
 app.use("/api/party", partyRouter)
 
 //conexao mongodb
-mongoose.connect(
-`mongodb://127.0.0.1/${dbName}`)
+//mongoose.connect(
+//`mongodb://127.0.0.1/${dbName}`)
+
+async function main(){
+    try{
+        mongoose.set("strictQuery", true)
+        await mongoose.connect(
+            "mongodb+srv://logus:xGYGiIvvoeAVC0P2@ptime0.tn3gt.mongodb.net/?retryWrites=true&w=majority&appName=ptime0")
+        console.log("on DB")
+    } catch (error){
+        console.log(`Erro: ${error}`)
+    }
+}
+main();
 
 app.get("/", (req, res) => {
     res.json({message: "Rota teste"})
