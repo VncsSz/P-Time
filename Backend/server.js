@@ -1,8 +1,11 @@
+require('dotenv').config();
+
 //modules 
 const express = require("express")
 const mongoose = require("mongoose")
 const bodyParser = require("body-parser")
 const cors = require("cors")
+
 
 //routes
 const authRouter = require("./routes/authRoutes.js")
@@ -12,7 +15,7 @@ const partyRouter = require("./routes/partyRoutes.js")
 
 //config
 //const dbName = "ptime"
-const port = 3000
+const port = process.env.PORT
 
 const app = express()
 
@@ -31,8 +34,7 @@ app.use("/api/party", partyRouter)
 async function main(){
     try{
         mongoose.set("strictQuery", true)
-        await mongoose.connect(
-            "mongodb+srv://logus:xGYGiIvvoeAVC0P2@ptime0.tn3gt.mongodb.net/?retryWrites=true&w=majority&appName=ptime0")
+        await mongoose.connect(process.env.DATABASE_URL)
         console.log("on DB")
     } catch (error){
         console.log(`Erro: ${error}`)

@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const jwt = require("jsonwebtoken")
 
 //Middleware to validade token
@@ -11,7 +13,7 @@ const checkToken = (req, res, next) =>{
 
     try {
         
-        const verified = jwt.verify(token, "keySecret")
+        const verified = jwt.verify(token, process.env.KEY)
         req.user = verified;
         next() //Continue
 
