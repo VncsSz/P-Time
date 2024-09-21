@@ -64,7 +64,7 @@ export default {
             const jsonData = JSON.stringify(data)
 
             
-            await fetch("http://localhost:3000/api/auth/register",{
+            await fetch("https://p-time.onrender.com/api/auth/register",{
                 method: "POST",
                 headers:{"Content-type": "application/json"},
                 body: jsonData
@@ -119,7 +119,7 @@ export default {
             //Get token from store
             const token = this.$store.getters.token;
             
-            await fetch("http://localhost:3000/api/user",{
+            await fetch("https://p-time.onrender.com/api/user",{
                 method: "PATCH",
                 headers:{
                     "Content-type": "application/json",

@@ -29,7 +29,7 @@ export default {
             const id = this.$route.params.id;
             const token = this.$store.getters.token;
 
-            await fetch(`http://localhost:3000/api/party/${id}`, {
+            await fetch(`https://p-time.onrender.com/api/party/${id}`, {
                 method: "GET",
                 headers: {
                     "Content-type": "application/json",
@@ -44,7 +44,7 @@ export default {
                 this.party.partyDate = this.party.partyDate.substring(0, 10);
 
                 this.party.photos.forEach((photo, index) =>{
-                    this.party.photos[index] = photo.replace("public", "http://localhost:3000")
+                    this.party.photos[index] = photo.replace("public", "https://p-time.onrender.com")
                 });
 
                 this.componentKey += 1;

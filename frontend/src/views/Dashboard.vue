@@ -38,7 +38,7 @@ export default {
             //Get token from store
             const token = this.$store.getters.token;
 
-            await fetch("http://localhost:3000/api/party/userparties",{
+            await fetch("https://p-time.onrender.com/api/party/userparties",{
                 method: "GET",
                 headers: {
                     "Content-type": "application/json",

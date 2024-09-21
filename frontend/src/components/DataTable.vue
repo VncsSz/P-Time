@@ -49,7 +49,7 @@ export default {
 
             const jsonData = JSON.stringify(data);
 
-            await fetch("http://localhost:3000/api/party", {
+            await fetch("https://p-time.onrender.com/api/party", {
                 method: "DELETE",
                 headers: {
                     "Content-type": "application/json",

@@ -28,7 +28,7 @@ export default {
     
     async getParties() {
 
-      await fetch("http://localhost:3000/api/party/all", {
+      await fetch("https://p-time.onrender.com/api/party/all", {
         method: "GET",
         headers: {
           "Content-type": "application/json"
@@ -48,7 +48,7 @@ export default {
           if(party.photos.length > 0) {
             party.photos.forEach((photo, index) => {
 
-              party.photos[index] = photo.replace("public", "http://localhost:3000").replaceAll("\\", "/");
+              party.photos[index] = photo.replace("public", "https://p-time.onrender.com").replaceAll("\\", "/");
 
             });
           }

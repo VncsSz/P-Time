@@ -45,7 +45,7 @@ export default {
 
             const jsonData = JSON.stringify(data);
 
-            await fetch("http://localhost:3000/api/auth/login", {
+            await fetch("https://p-time.onrender.com/api/auth/login", {
             method: "POST",
             headers: {"Content-type": "application/json"},
             body: jsonData

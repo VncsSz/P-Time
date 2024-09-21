@@ -78,7 +78,7 @@ export default {
             //Get token from store 
             const token = this.$store.getters.token;
 
-            await fetch("http://localhost:3000/api/party",{
+            await fetch("https://p-time.onrender.com/api/party",{
                 method: "POST",
                 headers: {
                     "auth-token": token
@@ -135,7 +135,7 @@ export default {
             //Get token from store 
             const token = this.$store.getters.token;
 
-            await fetch("http://localhost:3000/api/party",{
+            await fetch("https://p-time.onrender.com/api/party",{
                 method: "PATCH",
                 headers: {
                     "auth-token": token
